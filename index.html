@@ -1,0 +1,184 @@
+<!-- Pinky Calculator -->
+<!-- Nama : Mario Hermawan Setiadi -->
+<!-- NIM : 255150400111004 -->
+
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #ffd6ec, #e6d6ff);
+            margin: 0;
+        }
+
+        .calculator {
+            width: 300px;
+            background-color: #fff0f7;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(180, 120, 200, 0.25);
+            padding: 20px;
+        }
+
+        .display {
+            width: 100%;
+            height: 50px;
+            text-align: right;
+            font-size: 1.5rem;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: none;
+            background-color: #fbe4ff;
+            border-radius: 10px;
+            color: #6b4a7a;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .button {
+            background-color: #f8c8ff;
+            border: none;
+            font-size: 1.5rem;
+            padding: 20px;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            color: #5a3b6e;
+        }
+
+        .button:hover {
+            background-color: #e7a8ff;
+            transform: scale(1.08);
+        }
+
+        .button:active {
+            transform: scale(0.95);
+        }
+
+        .button.clear {
+            background-color: #ff9ecf;
+            color: white;
+        }
+
+        .button.clear:hover {
+            background-color: #ff7bbd;
+        }
+
+        .button.equal {
+            background-color: #c9a6ff;
+            color: white;
+        }
+
+        .button.equal:hover {
+            background-color: #b78cff;
+        }
+
+        .button.operator {
+            background-color: #e2b6ff;
+        }
+
+        .button.operator:hover {
+            background-color: #d69cff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="calculator">
+        <input type="text" id="display" class="display" disabled>
+
+        <div class="buttons">
+            <button class="button clear" onclick="clearDisplay()">C</button>
+            <button class="button operator" onclick="appendOperation('/')">/</button>
+            <button class="button operator" onclick="appendOperation('*')">*</button>
+            <button class="button operator" onclick="appendOperation('-')">-</button>
+
+            <button class="button" onclick="appendNumber('7')">7</button>
+            <button class="button" onclick="appendNumber('8')">8</button>
+            <button class="button" onclick="appendNumber('9')">9</button>
+            <button class="button operator" onclick="appendOperation('+')">+</button>
+
+            <button class="button" onclick="appendNumber('4')">4</button>
+            <button class="button" onclick="appendNumber('5')">5</button>
+            <button class="button" onclick="appendNumber('6')">6</button>
+            <button class="button equal" onclick="calculate()">=</button>
+
+            <button class="button" onclick="appendNumber('1')">1</button>
+            <button class="button" onclick="appendNumber('2')">2</button>
+            <button class="button" onclick="appendNumber('3')">3</button>
+            <button class="button" onclick="appendNumber('0')">0</button>
+        </div>
+    </div>
+
+<script>
+let currentInput = '';
+let currentOperation = '';
+let previousInput = '';
+
+function appendNumber(number) {
+    currentInput += number;
+    document.getElementById('display').value = `${previousInput} ${currentOperation} ${currentInput}`;
+}
+
+function appendOperation(operation) {
+    if (currentInput === '') return;
+    if (previousInput !== '') {
+        calculate();
+    }
+    currentOperation = operation;
+    previousInput = currentInput;
+    currentInput = '';
+    document.getElementById('display').value = `${previousInput} ${currentOperation}`;
+}
+
+function calculate() {
+    if (previousInput === '' || currentInput === '') return;
+
+    let result;
+    let prev = parseFloat(previousInput);
+    let current = parseFloat(currentInput);
+
+    switch (currentOperation) {
+        case '+':
+            result = prev + current;
+            break;
+        case '-':
+            result = prev - current;
+            break;
+        case '*':
+            result = prev * current;
+            break;
+        case '/':
+            if (current === 0) {
+                alert("Cannot divide by zero");
+                return;
+            }
+            result = prev / current;
+            break;
+        default:
+            return;
+    }
+
+    currentInput = result.toString();
+    currentOperation = '';
+    previousInput = '';
+    document.getElementById('display').value = currentInput;
+}
+
+function clearDisplay() {
+    currentInput = '';
+    previousInput = '';
+    currentOperation = '';
+    document.getElementById('display').value = '';
+}
+</script>
+
+</body>
+</html>
